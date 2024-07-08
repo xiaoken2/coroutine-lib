@@ -49,7 +49,11 @@ public:
 public:
     static void SetThis(Fiber *f);
     static std::shared_ptr<Fiber> GetThis();
+
     static uint64_t TotalFibers();
+
+    static void MainFunc();
+
     static uint64_t GetFiberId();
 
 private:

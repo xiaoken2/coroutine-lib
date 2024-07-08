@@ -154,17 +154,22 @@ void Fiber::yield() {
     }
 }
 
+void Fiber::MainFunc() {
+    
+    std::shared_ptr<Fiber> curr = GetThis();
 
+    assert(curr != nullptr);
 
+    curr->m_cb();
 
+    curr->m_cb = nullptr;
+    curr->m_state =TERM;
 
+    auto raw_ptr = curr.get();
+    curr.reset();
 
-
-
-
-
-
-
+    raw_ptr->yield();
+}
 
 
 
