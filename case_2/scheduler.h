@@ -31,7 +31,7 @@ public:
 
     // 添加调度任务
     void scheduleLock(std::shared_ptr<Fiber> fc, int thread_id = -1);
-    void scheduleLock(std::function<void> fc, int thread_id = -1);
+    void scheduleLock(std::function<void()> fc, int thread_id = -1);
 
     // 获取当前的线程号
     static int GetThreadId();

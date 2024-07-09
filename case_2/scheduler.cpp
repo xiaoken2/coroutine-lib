@@ -35,7 +35,7 @@ void Scheduler::SetThreadId(int thread_id) {
 Scheduler::Scheduler(size_t threads, bool use_caller, const std::string &name):
 m_useCaller(use_caller), m_name(name){
     assert(threads > 0);
-    assert(Scheduler::GetThis == nullptr);
+    assert(Scheduler::GetThis() == nullptr);
 
     tickler = 0;
 
@@ -54,7 +54,7 @@ m_useCaller(use_caller), m_name(name){
 
         // 创建调度协程并设置到m_rootFiber
             // 调度协程第三个参数设置为false->yield时，调度协程应该返回主协程
-        m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this)), 0, false);
+        m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run, this), 0, false));
 
         // 设置调度协程指针
         t_scheduler_fiber = m_rootFiber.get();
@@ -92,6 +92,7 @@ void Scheduler::start() {
     }
     std::cout << "Scheduler start() ends" << std::endl;
 }
+
 
 
 void Scheduler::run() {
