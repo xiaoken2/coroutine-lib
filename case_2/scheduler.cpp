@@ -2,12 +2,12 @@
 
 // 全局变量（线程局部变量）
 // 调度器：由同一个调度器下的所有线程共有
-static thread_local Scheduler* t_scheduler = nullptr;
-static thread_local Fiber* t_scheduler_fiber = nullptr;
+static thread_local Scheduler* t_scheduler = nullptr;  //指向当前线程的调度器实例
+static thread_local Fiber* t_scheduler_fiber = nullptr; // 指向当前线程的调度器协程
 
 // 当前线程的线程id
 // 主线程之外的线程将在创建工作线程后修改
-static thread_local int s_thread_id = 0;
+static thread_local int s_thread_id = 0;  // 保存当前线程的id
 
 
 // 获取调度器指针
@@ -85,7 +85,7 @@ void Scheduler::start() {
     assert(m_threads.empty());
     m_threads.resize(m_threadCount);
 
-    for (size_t i = 0; i < m_threadCount; i--) {
+    for (size_t i = 0; i < m_threadCount; i++) {
         m_threads[i].reset(new Thread(std::bind(&Scheduler::run, this), m_name + "_" + std::to_string(i)));
 
         m_threadIds.push_back(m_threads[i]->getId());
